@@ -1,13 +1,14 @@
 from tree import Node
 
-class KnightPathFinder:
-    def __init__(self, tup = ()):
-        self._root = Node(tup)
 
+class KnightPathFinder:
+    def __init__(self, tup=()):
+        self._root = Node(tup)
         self._considered_positions = set()
 
     def get_valid_moves(self, pos):
-        valid_moves = [(-1, 2), (1, 2), (-2, -1), (2, 1), (-1, -2), (1, -2), (-2, 1), (2, -1)]
+        valid_moves = [(-1, 2), (1, 2), (-2, -1), (2, 1),
+                       (-1, -2), (1, -2), (-2, 1), (2, -1)]
 
         valid_endpoints = [
             (pos[0] + move[0], pos[1] + move[1])
@@ -15,7 +16,6 @@ class KnightPathFinder:
             if ((pos[0] + move[0] in range(8)) and (pos[1] + move[1] in range(8)))
         ]
         return valid_endpoints
-
 
     def new_move_positions(self, pos):
         new_moves = []
@@ -27,9 +27,17 @@ class KnightPathFinder:
 
         return set(new_moves)
 
-
     def build_move_tree(self):
-        pass
+        queue = []
+        queue.append(self._root)
+        while queue:
+            current_node = queue.pop(0)
+            adjPos = self.new_move_positions(current_node._value)
+
+            nodeList = [Node(pos) for pos in adjPos]
+            [current_node.add_child(node) for node in nodeList]
+
+            queue.extend(nodeList)
 
     def find_path(self, end_position):
         pass
@@ -38,7 +46,6 @@ class KnightPathFinder:
         pass
 
 
-
-
-finder = KnightPathFinder((0, 0))
-print(finder.new_move_positions((4,4)))
+finder = KnightPathFinder((4, 4))
+finder.build_move_tree()
+print(finder._root.children)

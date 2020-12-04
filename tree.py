@@ -52,6 +52,7 @@ class Node:
         return None
 
     def breadth_search(self, value):
+        queue = []
         queue.append(self)
         while queue:
             current_node = queue.pop(0)
